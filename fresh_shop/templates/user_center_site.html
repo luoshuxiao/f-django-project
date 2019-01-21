@@ -1,0 +1,80 @@
+{% extends 'base_main.html' %}
+{% block title %}
+	天天生鲜-用户中心
+{% endblock %}
+{% block search %}
+	<div class="search_bar clearfix">
+		<a href="{% url 'goods:index' %}" class="logo fl"><img src="/static/images/logo.png"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
+		<div class="search_con fr">
+			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
+			<input type="button" class="input_btn fr" name="" value="搜索">
+		</div>
+		<!--<form action="/goods/search/" method="get">-->
+			<!--{% csrf_token %}-->
+			<!--<div class="search_con fr">-->
+				<!--<input type="text" class="input_text fl" name="words" placeholder="搜索商品">-->
+				<!--<input type="submit" class="input_btn fr" name="" value="搜索">-->
+			<!--</div>-->
+		<!--</form>-->
+	</div>
+{% endblock %}
+{% block content %}
+	<div class="main_con clearfix">
+		<div class="left_menu_con clearfix">
+			<h3>用户中心</h3>
+			{% include 'base_user.html'%}
+			<!--<ul>-->
+				<!--<li><a href="{% url 'user:user_center_info' %}">· 个人信息</a></li>-->
+				<!--<li><a href="{% url 'user:user_center_order' %}">· 全部订单</a></li>-->
+				<!--<li><a href="{% url 'user:user_center_site' %}" class="active">· 收货地址</a></li>-->
+			<!--</ul>-->
+		</div>
+		<div class="right_content clearfix">
+				<h3 class="common_title2">收货地址</h3>
+				<div class="site_con">
+					<dl>
+						<dt>当前地址：</dt>
+
+						{% for address in user_address %}
+						<dd>
+							{{ address.province }}
+							{{ address.city }}
+							{{ address.district }}
+							{{ address.address }}
+							{{ address.signer_name }}
+							{{ address.signer_mobile }}
+						</dd>
+						{% endfor %}
+					</dl>					
+				</div>
+				<h3 class="common_title2">编辑地址</h3>
+				<div class="site_con">
+					<form action="" method="post">
+						{% csrf_token %}
+						<div class="form_group">
+							<label>收件人：</label>
+							<input type="text" name="username">
+							{{ errors.username }}
+						</div>
+						<div class="form_group form_group2">
+							<label>详细地址：</label>
+							<textarea class="site_area" name="address"></textarea>
+							{{ errors.address }}
+						</div>
+						<div class="form_group">
+							<label>邮编：</label>
+							<input type="text" name="postcode">
+							{{ errors.postcode }}
+						</div>
+						<div class="form_group">
+							<label>手机：</label>
+							<input type="text" name="mobile">
+							{{ errors.mobile }}
+						</div>
+						<input type="submit" value="提交" class="info_submit">
+					</form>
+				</div>
+		</div>
+	</div>
+{% endblock %}

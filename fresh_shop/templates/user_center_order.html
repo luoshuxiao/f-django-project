@@ -1,0 +1,83 @@
+{% extends 'base_main.html' %}
+{% block title %}
+	天天生鲜-用户中心
+{% endblock %}
+
+
+{% block search %}
+	<div class="search_bar clearfix">
+		<a href="{% url 'goods:index' %}" class="logo fl"><img src="/static/images/logo.png"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
+		<form action="/goods/search/" method="get">
+			{% csrf_token %}
+			<div class="search_con fr">
+				<input type="text" class="input_text fl" name="words" placeholder="搜索商品">
+				<input type="submit" class="input_btn fr" name="" value="搜索">
+			</div>
+		</form>
+	</div>
+{% endblock %}
+{% block content %}
+	<div class="main_con clearfix">
+		<div class="left_menu_con clearfix">
+			<h3>用户中心</h3>
+			{% include 'base_user.html' %}
+			<!--<ul>-->
+				<!--<li><a href="{% url 'user:user_center_info' %}">· 个人信息</a></li>-->
+				<!--<li><a href="{% url 'user:user_center_order' %}" class="active">· 全部订单</a></li>-->
+				<!--<li><a href="{% url 'user:user_center_site' %}">· 收货地址</a></li>-->
+			<!--</ul>-->
+		</div>
+		<div class="right_content clearfix">
+				<h3 class="common_title2">全部订单</h3>
+			    {% for order in orders %}
+				<ul class="order_list_th w978 clearfix">
+					<li class="col01">{{ order.add_time }}</li>
+					<li class="col02" style="width:53%;">订单号：{{ order.order_sn }}</li>
+					<li class="col02 stress">
+						{% for s in status %}
+						    {% ifequal s.0 order.pay_status %}
+						       {{ s.1 }}
+						    {% endifequal %}
+						{% endfor %}
+					</li>
+				</ul>
+
+				<table class="order_list_table w980">
+					<tbody>
+						<tr>
+							<td width="55%">
+								{% for order_goods in order.goods.all %}
+								<ul class="order_goods_list clearfix">					
+									<li class="col01"><a href="{% url 'goods:detail' order_goods.goods.id %}"><img src="/media/{{ order_goods.goods.goods_front_image }}"></a></li>
+									<li class="col02"><a href="{% url 'goods:detail' order_goods.goods.id %}">{{ order_goods.goods.name }}</a><em>${{ order_goods.goods.shop_price }}/500g</em></li>
+									<li class="col03">{{ order_goods.goods_nums }}</li>
+									<li class="col04">{{ order_goods.goods.shop_price }}</li>
+								</ul>
+								{% endfor %}
+							</td>
+							<td width="15%">{{ order.order_mount }}</td>
+							<td width="15%">
+								{% for s in status %}
+									{% ifequal s.0 order.pay_status %}
+									   {{ s.1 }}
+									{% endifequal %}
+						        {% endfor %}
+							</td>
+							<td width="15%"><a href="#" class="oper_btn">去付款</a></td>
+						</tr>
+					</tbody>
+				</table>
+			    {% endfor %}
+				<div class="pagenation">
+
+					<a href="{% if orders.has_previous %}{% url 'user:user_center_order' %}?page={{ orders.previous_page_number }}{% else %}#{% endif %}"><上一页</a>
+					<!--<a href="#" class="active">1</a>-->
+					{% for i in orders.paginator.page_range %}
+					<a href="{% url 'user:user_center_order' %}?page={{ i }}"{% ifequal orders.number i %} class="active"{% endifequal %}>{{ i }}</a>
+					{% endfor %}
+					<a href="{% if orders.has_next %}{% url 'user:user_center_order' %}?page={{ orders.next_page_number }}{% else %}#{% endif %}">下一页></a>
+				</div>
+		</div>
+	</div>
+{% endblock %}

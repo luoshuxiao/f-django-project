@@ -1,0 +1,66 @@
+{% extends 'base_main.html' %}
+{% block title %}
+	天生鲜-用户中心
+{% endblock %}
+
+{% block search %}
+	<div class="search_bar clearfix">
+		<a href="{% url 'goods:index' %}" class="logo fl"><img src="/static/images/logo.png"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
+		<form action="/goods/search/" method="get">
+			{% csrf_token %}
+			<div class="search_con fr">
+				<input type="text" class="input_text fl" name="words" placeholder="搜索商品">
+				<input type="submit" class="input_btn fr" name="" value="搜索">
+			</div>
+		</form>
+	</div>
+{% endblock %}
+{% block content %}
+	<div class="main_con clearfix">
+		<div class="left_menu_con clearfix">
+			<h3>用户中心</h3>
+			{% include 'base_user.html' %}
+			<!--<ul>-->
+				<!--<li><a href="{% url 'user:user_center_info' %}" class="active">· 个人信息</a></li>-->
+				<!--<li><a href="{% url 'user:user_center_order' %}">· 全部订单</a></li>-->
+				<!--<li><a href="{% url 'user:user_center_site' %}">· 收货地址</a></li>-->
+			<!--</ul>-->
+		</div>
+		<div class="right_content clearfix">
+				<div class="info_con clearfix">
+					<h3 class="common_title2">基本信息</h3>
+							<ul class="user_info_list">
+								<li><span>用户名：</span>{{ address.signer_name }}</li>
+								<li><span>联系方式：</span>{{ address.signer_mobile }}</li>
+								<li><span>联系地址：</span>{{ address.city}}{{address.district}}</li>
+							</ul>
+				</div>
+				
+				<h3 class="common_title2">最近浏览</h3>
+					<div class="has_view_list">
+						<ul class="goods_type_list clearfix">
+                            {% if recently_read_goods.0 %}
+								{% for goods in recently_read_goods %}
+								<li>
+									<a href="{% url 'goods:detail' goods.id %}"><img src="/media/{{ goods.goods_front_image }}"></a>
+									<h4><a href="{% url 'goods:detail' goods.id %}">{{ goods.name }}</a></h4>
+									<div class="operate">
+										<span class="prize">${{ goods.shop_price }}</span>
+										<span class="unit">${{ goods.shop_price }}/500g</span>
+										<a href="#" class="add_goods" title="加入购物车"></a>
+									</div>
+								</li>
+								{% endfor %}
+							{% endif %}
+						</ul>
+						{% if not recently_read_goods.0 %}
+						<div style="text-align:center;font-size:15px;">
+                           <a href="{% url 'goods:index' %}"><img src="/static/images/1547869340(1).jpg"></a>
+						   <h2 style="margin-top:30px;"><a href="{% url 'goods:index' %}">您好！作为富二代的父母，您还没浏览过具体的商品哦，点击我去采购吧？</a></h2>
+						</div>
+						{% endif %}
+					</div>
+		</div>
+	</div>
+{% endblock %}
