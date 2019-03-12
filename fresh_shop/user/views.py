@@ -50,7 +50,8 @@ def logout(request):
         # del request.session['user_id']
         #  清空当前登陆session记录
         request.session.flush()
-        #  如果只是删除user_id的话，在退出时需要判断session中是否有商品信息，没有商品信息就不删除session中的商品信息
+        #  如果只是删除user_id的话，在退出时需要判断session中是否有商品信息，
+        #       没有商品信息就不删除session中的商品信息
         # if request.session.get('goods'):
         #     del request.session['goods']
         return HttpResponseRedirect(reverse('goods:index'))
@@ -61,7 +62,8 @@ def user_center_info(request):
         id = request.session['user_id']
         user = User.objects.filter(id=id)[0]
         address = user.useraddress_set.all()[0]
-        #  返回一个标识符 （用户中心下的分类标签的样式设置，方便前端base_user.html实现在那个页面下就让那个页面的分类标签变颜色）
+        #  返回一个标识符 （用户中心下的分类标签的样式设置，
+        #  方便前端base_user.html实现在那个页面下就让那个页面的分类标签变颜色）
         active = 'info'
         #  返回最近浏览商品列表
         r_list = request.session.get('read_list')
@@ -85,7 +87,8 @@ def user_center_order(request):
         status = OrderInfo.ORDER_STATUS
         pg = Paginator(order, ORDER_NUMBER)
         orders = pg.page(page)
-        #  返回一个标识符 （用户中心下的分类标签的样式设置，方便前端base_user.html实现在那个页面下就让那个页面的分类标签变颜色）
+        #  返回一个标识符 （用户中心下的分类标签的样式设置，
+        #  方便前端base_user.html实现在那个页面下就让那个页面的分类标签变颜色）
         active = 'order'
         return render(request, 'user_center_order.html', {'orders': orders, 'status': status, 'active': active})
 
@@ -94,7 +97,8 @@ def user_center_site(request):
     if request.method == 'GET':
         user_id = request.session.get('user_id')
         user_address = UserAddress.objects.filter(user_id=user_id)
-        #  返回一个标识符 （用户中心下的分类标签的样式设置，方便前端base_user.html实现在那个页面下就让那个页面的分类标签变颜色）
+        #  返回一个标识符 （用户中心下的分类标签的样式设置，
+        #  方便前端base_user.html实现在那个页面下就让那个页面的分类标签变颜色）
         active = 'site'
         return render(request, 'user_center_site.html', {'user_address': user_address, 'active': active})
     if request.method == 'POST':

@@ -6,11 +6,7 @@ from goods.models import Goods, GoodsCategory
 
 
 def index(request):
-    """
-    访问首页
-    :param request:
-    :return:
-    """
+    """访问首页"""
     if request.method == 'GET':
         #  从数据库查数据返回数据到页面
         # 数据返回方式一：
@@ -41,6 +37,7 @@ def list(request, id, page):
 
 
 def search(request):
+    """按照类别或者商品名搜索商品"""
     if request.method == 'GET':
         words = request.GET.get('words')
         #  判断搜索框是否提交了内容

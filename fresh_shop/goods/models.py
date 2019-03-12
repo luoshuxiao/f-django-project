@@ -2,9 +2,7 @@ from django.db import models
 
 
 class GoodsCategory(models.Model):
-    """
-    Goods类别
-    """
+    """Goods类别"""
     objects = None
     CATEGORY_TYPE = (
         (1, '新鲜水果'),
@@ -23,9 +21,7 @@ class GoodsCategory(models.Model):
 
 
 class Goods(models.Model):
-    """
-    商品
-    """
+    """商品"""
     objects = None
     category = models.ForeignKey(GoodsCategory, verbose_name='商品类目', on_delete=models.CASCADE)
     name = models.CharField(max_length=100, verbose_name='商品名')

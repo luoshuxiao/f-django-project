@@ -10,19 +10,6 @@ from user.models import User
 
 class StateMiddleware(MiddlewareMixin):
 
-    # def process_request(self, request):
-    #     #  拦截请求之前的操作
-    #     #  给request.user赋值
-    #     path = request.path
-    #     if path in ['/user/login/', '/user/register/', '/goods/index/']:
-    #         return None
-    #     try:
-    #         user_id = request.session['user_id']
-    #         user = User.objects.filter(id=user_id)[0]
-    #         request.user = user
-    #     except Exception as e:
-    #         return HttpResponseRedirect(reverse('user:login'))
-
     def process_request(self, request):
         user_id = request.session.get('user_id')
         if user_id:
@@ -80,7 +67,7 @@ class SessionDbMiddleware(MiddlewareMixin):
 
 
 class ReadRecodeMiddleware(MiddlewareMixin):
-    """在访问商品详情页面时，响应页面之前有序的记录查看的商品id值"""
+    """在访问商品详情页面时，响应页面之前有序的记录查看的商品id值（实现最近浏览功能）"""
     def process_response(self, request, response):
         path = request.path
         #  将请求地址与商品详情页面url匹配
