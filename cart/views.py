@@ -76,7 +76,7 @@ def cart_price(request):
 
 # def change_cart(request):
 #     if request.method == 'POST':
-#         #  修改商品的数量和选择状态
+#         #  修改商品数量和选择状态
 #         #  修改session中商品信息，结构为：[ goods_id,num,is_select]
 #
 #         #  获取商品id 和 数量或者状态

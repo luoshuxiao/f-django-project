@@ -137,11 +137,11 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-#  设置我的订单页面显示分页 每一页的订单个数
+#  设置我的订单页面显示分页 每一页订单个数
 ORDER_NUMBER = 2
 
 #  设置全部商品下的每一个类别商品的所有商品的每页展示的个数
 LIST_NUMBER = 5
 
-#  设置用户中心最近浏览商品的显示个数
+#  设置用户中心最近浏览商品显示个数
 READ_RECENTLY = 5

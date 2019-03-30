@@ -10,7 +10,7 @@ from user.models import UserAddress
 
 def place_order(request):
     if request.method == 'GET':
-        # 获取当前登录的用户
+        # 获取当前登录用户
         user = request.user
         carts = ShoppingCart.objects.filter(user=user, is_select=True)
         total_price = 0
@@ -48,7 +48,7 @@ def order(request):
         order = OrderInfo.objects.create(user_id=user_id, order_sn=order_sn, order_mount=order_mount,
                                          address=user_address.address, signer_name=user_address.signer_name,
                                          signer_mobile=user_address.signer_mobile)
-        # 3. 创建订单详情
+        # 3. 创建订单的详情
         for cart in shop_cart:
             OrderGoods.objects.create(order=order,
                                       goods=cart.goods,
