@@ -1,8 +1,13 @@
-from django.core.paginator import Paginator
-from django.shortcuts import render
+﻿# -*- coding: utf-8 -*-
 
+"""与商品信息相关的视图函数"""
+
+from django.shortcuts import render
+from django.core.paginator import Paginator
+
+from goods.models import Goods
+from goods.models import  GoodsCategory
 from fresh_shop.settings import LIST_NUMBER
-from goods.models import Goods, GoodsCategory
 
 
 def index(request):
@@ -21,6 +26,7 @@ def index(request):
 
 
 def detail(request, id):
+    """根据id返回商品类别和详情"""
     if request.method == 'GET':
         #  返回商品详情
         goods = Goods.objects.filter(id=id).first()
@@ -29,6 +35,7 @@ def detail(request, id):
 
 
 def list(request, id, page):
+    """返回对应分类、相应页面的商品数据"""
     if request.method == 'GET':
         category = GoodsCategory.objects.filter(id=id)[0]
         goods = category.goods_set.all()

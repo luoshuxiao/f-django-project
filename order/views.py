@@ -1,14 +1,22 @@
-from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render
-from django.urls import reverse
+﻿# -*- coding: utf-8 -*-
 
-from cart.models import ShoppingCart
-from order.function import get_order_sn
-from order.models import OrderInfo, OrderGoods
+"""与订单相关的视图函数"""
+
+from django.urls import reverse
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.http import HttpResponseRedirect
+
+
 from user.models import UserAddress
+from cart.models import ShoppingCart
+from order.models import OrderInfo
+from order.models import OrderGoods
+from order.function import get_order_sn
 
 
 def place_order(request):
+    """订单金额、数量、总计"""
     if request.method == 'GET':
         # 获取当前登录用户
         user = request.user
@@ -33,9 +41,9 @@ def place_order(request):
 def order(request):
     """创建订单（购物车提交成功后）"""
     if request.method == 'POST':
-        # 1. 获取收货地址id值
-        #  2.  创建订单
-        #  3. 创建订单详情
+        #  获取收货地址id值
+        #  创建订单
+        #  创建订单详情
         ad_id = request.POST.get('ad_id')
         user_id = request.session.get('user_id')
         order_sn = get_order_sn()
@@ -48,12 +56,12 @@ def order(request):
         order = OrderInfo.objects.create(user_id=user_id, order_sn=order_sn, order_mount=order_mount,
                                          address=user_address.address, signer_name=user_address.signer_name,
                                          signer_mobile=user_address.signer_mobile)
-        # 3. 创建订单的详情
+        # 创建订单的详情
         for cart in shop_cart:
             OrderGoods.objects.create(order=order,
                                       goods=cart.goods,
                                       goods_nums=cart.nums)
-        # 4.删除购物车和session中已经提交订单的商品
+        # 删除购物车和session中已经提交订单的商品
         shop_cart.delete()
         session_goods = request.session.get('goods')
         for se_goods in session_goods[:]:

@@ -1,17 +1,27 @@
-from django.contrib.auth.hashers import make_password
+﻿# -*- coding: utf-8 -*-
+
+"""用户相关的模块"""
+
+from django.urls import reverse
+from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.urls import reverse
+from django.contrib.auth.hashers import make_password
 
-from fresh_shop.settings import ORDER_NUMBER, READ_RECENTLY
 from goods.models import Goods
 from order.models import OrderInfo
-from user.forms import RegisterForm, LoginForm, AddressForm
-from user.models import User, UserAddress
+from fresh_shop.settings import ORDER_NUMBER
+from fresh_shop.settings import READ_RECENTLY
+
+from user.models import User
+from user.forms import LoginForm
+from user.forms import AddressForm
+from user.forms import RegisterForm
+from user.models import UserAddress
 
 
 def register(request):
+    """用户注册"""
     if request.method == 'GET':
         return render(request, 'register.html')
     if request.method == 'POST':
@@ -30,6 +40,7 @@ def register(request):
 
 
 def login(request):
+    """用户登录"""
     if request.method == 'GET':
         return render(request, 'login.html')
     if request.method == 'POST':
@@ -45,19 +56,15 @@ def login(request):
 
 
 def logout(request):
+    """退出登录，删除用户session"""
     if request.method == 'GET':
-        #  删除session中的id值
-        # del request.session['user_id']
         #  清空当前登陆session记录
         request.session.flush()
-        #  如果只是删除user_id的话，在退出时需要判断session中是否有商品信息，
-        #       没有商品信息就不删除session中的商品信息
-        # if request.session.get('goods'):
-        #     del request.session['goods']
         return HttpResponseRedirect(reverse('goods:index'))
 
 
 def user_center_info(request):
+    """用户中心最近浏览商品的信息"""
     if request.method == 'GET':
         id = request.session['user_id']
         user = User.objects.filter(id=id)[0]
@@ -79,6 +86,7 @@ def user_center_info(request):
 
 
 def user_center_order(request):
+    """用户中心订单信息"""
     if request.method == 'GET':
         user_id = request.session.get('user_id')
         page = int(request.GET.get('page', 1))
@@ -94,6 +102,7 @@ def user_center_order(request):
 
 
 def user_center_site(request):
+    """创建用户中心地址信息"""
     if request.method == 'GET':
         user_id = request.session.get('user_id')
         user_address = UserAddress.objects.filter(user_id=user_id)
@@ -115,7 +124,6 @@ def user_center_site(request):
                                        signer_mobile=mobile,
                                        signer_postcode=postcode)
             return HttpResponseRedirect(reverse('user:user_center_site'))
-
         else:
             errors = form.errors
             return render(request, 'user_center_site.html', {'errors': errors})

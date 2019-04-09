@@ -1,3 +1,7 @@
+﻿# -*- coding: utf-8 -*-
+
+"""用户相关的表单验证"""
+
 import re
 
 from django import forms
@@ -7,9 +11,7 @@ from user.models import User
 
 
 class RegisterForm(forms.Form):
-    """
-    表单验证
-    """
+    """注册表单验证"""
     user_name = forms.CharField(max_length=20, min_length=5, required=True,
                                 error_messages={'required': '用户名必填', 'max_length': '最长不能超过20个字符', 'min_length': '最少不能少于5个字符'})
     pwd = forms.CharField(max_length=20, min_length=8, required=True,
@@ -45,6 +47,7 @@ class RegisterForm(forms.Form):
 
 
 class LoginForm(forms.Form):
+    """登录表单验证"""
     username = forms.CharField(max_length=20, min_length=5, required=True,
                                 error_messages={'required': '用户名必填', 'max_length': '最长不能超过20个字符', 'min_length':'最少不能少于5个字符'})
     pwd = forms.CharField(max_length=20, min_length=8, required=True,

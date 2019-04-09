@@ -1,15 +1,19 @@
+﻿# -*- coding: utf-8 -*-
+
+"""中间件定义：登录校验、购物车与数据库同步、最近浏览"""
+
 import re
 
 from django.urls import reverse
-from django.utils.deprecation import MiddlewareMixin
 from django.http import HttpResponseRedirect
+from django.utils.deprecation import MiddlewareMixin
 
-from cart.models import ShoppingCart
 from user.models import User
+from cart.models import ShoppingCart
 
 
 class StateMiddleware(MiddlewareMixin):
-
+    """登录校验"""
     def process_request(self, request):
         user_id = request.session.get('user_id')
         if user_id:
@@ -34,7 +38,7 @@ class StateMiddleware(MiddlewareMixin):
 
 
 class SessionDbMiddleware(MiddlewareMixin):
-
+    """数据同步"""
     def process_response(self, request, response):
         # 同步session中的商品信息和数据库中购物车表的商品信息
         # 1. 判断用户是否登录，登录才做数据同步操作

@@ -1,11 +1,16 @@
-from django.http import JsonResponse
-from django.shortcuts import render
+﻿# -*- coding: utf-8 -*-
 
-from cart.models import ShoppingCart
+"""购物车相关试图逻辑"""
+
+from django.shortcuts import render
+from django.http import JsonResponse
+
 from goods.models import Goods
+from cart.models import ShoppingCart
 
 
 def add_cart(request):
+    """添加商品到购物车"""
     if request.method == 'POST':
         #  接受商品id值和商品数量
         #  组装存储一个商品格式 ： [ goods_id,num,is_select]
@@ -33,8 +38,8 @@ def add_cart(request):
         return JsonResponse({'code': 200, 'msg': '请求成功', 'count': count})
 
 
-# 刷新购物车的数量
 def cart_num(request):
+    """刷新购物车的数量"""
     if request.method == 'GET':
         session_goods = request.session.get('goods')
         count =len(session_goods) if session_goods else 0
@@ -42,6 +47,7 @@ def cart_num(request):
 
 
 def cart(request):
+    """购物车信息"""
     if request.method == 'GET':
         session_goods = request.session.get('goods')
         #  设计我的购物车页面数据返回格式：[对象1，对象2，...]
@@ -56,8 +62,9 @@ def cart(request):
                 result.append(data)
         return render(request, 'cart.html', {'result': result})
 
-#  我的购物车商品复选框的选择总数，价格总和
+
 def cart_price(request):
+    """我的购物车商品复选框的选择总数，价格总和"""
     if request.method == 'GET':
         session_goods = request.session.get('goods')
         #  商品件数
@@ -92,6 +99,7 @@ def cart_price(request):
 #         request.session['goods'] = session_goods
 #         return JsonResponse({'code': 200, 'msg': '请求成功'})
 def change_cart(request):
+    """用户点击复选框时修改购物车数据信息"""
     if request.method == 'POST':
         # 修改商品的数量和选择状态
         # 其实就是修改session中商品信息，结构为[goods_id, num, is_select]
@@ -112,6 +120,7 @@ def change_cart(request):
 
 
 def del_goods(request):
+    """购物车删除商品"""
     if request.method == 'POST':
         goods_id = int(request.POST.get('goods_id'))
         session_goods = request.session.get('goods')
